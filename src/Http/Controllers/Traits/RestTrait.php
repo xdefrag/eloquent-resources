@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Devjs\EloquentResources\Http\Controllers\V2\Traits;
+namespace Devjs\EloquentResources\Http\Controllers\Traits;
 
 use Devjs\EloquentResources\Repositories\Interfaces\RepositoryInterface;
 use Illuminate\Http\JsonResponse;
