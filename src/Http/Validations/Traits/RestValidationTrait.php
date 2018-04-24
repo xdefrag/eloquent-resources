@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Devjs\EloquentResources\Http\Validations\V2\Traits;
+namespace Devjs\EloquentResources\Http\Validations\Traits;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
