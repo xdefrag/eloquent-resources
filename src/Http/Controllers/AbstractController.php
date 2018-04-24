@@ -8,7 +8,7 @@ use Devjs\EloquentResources\Http\Interfaces\RestInterface;
 use Devjs\EloquentResources\Http\Controllers\Traits\RestTrait;
 use Illuminate\Http\Response;
 
-class AbstractController extends RestInterface
+abstract class AbstractController implements RestInterface
 {
     use RestTrait;
 
