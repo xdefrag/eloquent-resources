@@ -38,7 +38,7 @@ class AbstractController extends RestInterface
     /*
      * Adds metadata to 'all' request.
      */ 
-    protected function addMetadata(array $data): void
+    protected function addMetadata(array $data): array
     {
         return $data;
     }
