@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Repositories{{ns}};
+
+use App\Entities\{{base}};
+use App\Repositories\Interfaces\{{base}}RepositoryInterface;
+use Devjs\EloquentResources\Repositories\AbstractRepository;
+
+class {{base}}Repository extends AbstractRepository implements {{base}}RepositoryInterface
+{
+    public function __construct({{base}} $model)
+    {
+        $this->model = $model;
+    }
+}

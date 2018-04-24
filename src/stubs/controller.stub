@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers{{ns}};
+
+use App\Http\Interfaces\{{base}}Interface;
+use App\Repositories\Interfaces\{{base}}RepositoryInterface;
+use Devjs\EloquentResources\Http\Controllers\AbstractController;
+
+class {{base}}Controller extends AbstractController implements {{base}}Interface
+{
+    public function __construct({{base}}RepositoryInterface $repository)
+    {
+        /* @todo Insert Criterias here */
+        $this->repository = $repository;
+    }
+}

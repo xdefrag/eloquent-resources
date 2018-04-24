@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Validations{{ns}};
+
+use App\Http\Interfaces\{{base}}Interface;
+use App\Http\Controllers\{{base}}Controller;
+use Devjs\EloquentResources\Http\Validations\AbstractValidation;
+
+class {{base}}Validation extends AbstractValidation implements {{base}}Interface
+{
+    public function __construct({{base}}Controller $controller)
+    {
+        $this->controller = $controller;
+    }
+}
