@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 trait RestTrait
 {
     /* @var RepositoryInterface */
-    private $repository;
+    protected $repository;
 
     public function all(Request $request): JsonResponse
     {

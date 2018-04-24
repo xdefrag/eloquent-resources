@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Devjs\EloquentResources\Repositories\Traits;
 
 use Illuminate\Database\Eloquent\Collection;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Devjs\EloquentResources\Repositories\Traits;
 
 use Devjs\EloquentResources\Repositories\Criterias\CriteriaInterface;
@@ -7,7 +9,7 @@ use Devjs\EloquentResources\Repositories\Interfaces\RepositoryInterface;
 
 trait CriteriaTrait
 {
-    private $criterias = [];
+    protected $criterias = [];
 
     public function pushCriteria(CriteriaInterface $criteria): void
     {
