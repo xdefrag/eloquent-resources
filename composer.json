@@ -16,7 +16,7 @@
         "illuminate/container": "^5.4",
         "illuminate/console": "^5.4",
         "nikic/php-parser": "^4.0",
-        "symfony/finder": "^4.0",
+        "symfony/finder": "^3.0",
         "illuminate/validation": "^5.4"
     },
     "require-dev" : {

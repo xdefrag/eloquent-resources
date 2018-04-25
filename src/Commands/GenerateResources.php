@@ -25,8 +25,8 @@ class GenerateResources extends Command
         foreach (EloquentResources::generators() as $generator) {
             $context = $generator->generate($entityName);
 
-            $name = PhpParser::parseName($context);
             $namespace = PhpParser::parseNamespace($context);
+            $name = PhpParser::parseName($context);
 
             $this->info("Generated " . $name . " in " . $namespace);
 

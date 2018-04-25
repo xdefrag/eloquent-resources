@@ -20,11 +20,11 @@ abstract class AbstractGenerator implements GeneratorInterface
 
     protected function parseEntityName(string $entityName): array
     {
-        $ns = '\\';
+        $ns = '';
         $base = '';
 
         if (strpos($entityName, '\\') !== false) {
-            $ns .= preg_replace('/\\\\\w+$/', '', $entityName);
+            $ns = '\\' . preg_replace('/\\\\\w+$/', '', $entityName);
             $base = preg_replace('/.+\\\\/', '', $entityName);
         } else {
             $base = $entityName;
