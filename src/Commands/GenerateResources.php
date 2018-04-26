@@ -13,18 +13,22 @@ use Illuminate\Console\Command;
 class GenerateResources extends Command
 {
     protected $signature = 'eloquent-resources:generate
-                            {entityName : Entity name}
-                            {--resource=generator : Specify which resource to create}';
+{entityName : Entity name}
+{--generators=all : Specify which resource to create. Available: http, repository, entity-event, entity-listener, all}
+{--overwrite=false : Overwrite files}';
 
     protected $description = 'Generate full resource for entity';
 
     public function handle()
     {
         $entityName = $this->argument('entityName');
-        $resource = $this->option('resource');
+        $generators = explode(',', $this->option('generators'));
+        $overwrite = $this->option('overwrite');
+
+        $filesCreated = 0;
 
         /* @var GeneratorInterface $generator */
-        foreach (EloquentResources::generators($resource) as $generator) {
+        foreach (EloquentResources::generators($generators) as $generator) {
             $context = $generator->generate($entityName);
 
             $namespace = PhpParser::parseNamespace($context);
@@ -37,8 +41,10 @@ class GenerateResources extends Command
             Saver::save($location, $context);
 
             $this->info("Saved in " . $location);
+
+            $filesCreated++;
         };
 
-        $this->info("All files generated.");
+        $this->info("Generated " . $filesCreated . " files.");
     }
 }
