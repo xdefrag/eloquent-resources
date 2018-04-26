@@ -13,16 +13,18 @@ use Illuminate\Console\Command;
 class GenerateResources extends Command
 {
     protected $signature = 'eloquent-resources:generate
-{entityName : Entity name}';
+                            {entityName : Entity name}
+                            {--resource=generator : Specify which resource to create}';
 
     protected $description = 'Generate full resource for entity';
 
     public function handle()
     {
         $entityName = $this->argument('entityName');
+        $resource = $this->option('resource');
 
         /* @var GeneratorInterface $generator */
-        foreach (EloquentResources::generators() as $generator) {
+        foreach (EloquentResources::generators($resource) as $generator) {
             $context = $generator->generate($entityName);
 
             $namespace = PhpParser::parseNamespace($context);
@@ -31,7 +33,7 @@ class GenerateResources extends Command
             $this->info("Generated " . $name . " in " . $namespace);
 
             $location = Saver::location($namespace, $name);
-            
+
             Saver::save($location, $context);
 
             $this->info("Saved in " . $location);
