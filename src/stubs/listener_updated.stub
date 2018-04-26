@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Listeners{{ns}};
+
+use App\Events\{{base}}Updated;
+
+class {{base}}UpdatedListener
+{
+    public function __construct()
+    {
+        //
+    }
+
+    public function handle({{base}}Updated $event): void
+    {
+        //
+    }
+}
