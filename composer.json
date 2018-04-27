@@ -18,7 +18,7 @@
         "illuminate/broadcasting": "^5.4",
         "illuminate/queue": "^5.4",
         "nikic/php-parser": "^3.0",
-        "symfony/finder": "^3.0",
+        "symfony/finder": "^2.0|^3.0|^4.0",
         "illuminate/validation": "^5.4"
     },
     "require-dev" : {
