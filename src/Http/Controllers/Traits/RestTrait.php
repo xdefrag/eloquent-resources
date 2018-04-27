@@ -59,7 +59,9 @@ trait RestTrait
 
     public function update(Request $request): JsonResponse
     {
-        $item = $this->repository->update((int) $request->get('id'), $request->all());
+        $item = $this->repository
+            ->applyCriteria()
+            ->update((int) $request->get('id'), $request->all());
 
         $this->dispatchEvent($request->user()->id, $item->id, 'update');
 
