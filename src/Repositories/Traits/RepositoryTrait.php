@@ -109,6 +109,6 @@ trait RepositoryTrait
 
     public function destroy(int $id): int
     {
-        return $this->model->destroy($id);
+        return $this->model->where('id', $id)->delete();
     }
 }

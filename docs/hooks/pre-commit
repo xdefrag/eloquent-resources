@@ -1,0 +1,74 @@
+#!/bin/sh
+
+set -e
+
+tput clear
+
+Success () {
+    tput setaf 2; printf "Checks passed\n"
+    tput sgr0
+    exec < /dev/tty
+    while true; do
+    read -p "Commiting? (Y/n)" yn
+        case $yn in
+            [Yy]* ) exit 0;;
+            [Nn]* ) exit 1;;
+            * ) echo "y or n";;
+        esac
+    done
+}
+
+Failure () {
+    tput setaf 1
+    printf "\nFailed!\n"
+    printf "Fix your code!!!11\n"
+    exit 1
+}
+
+DIFF=$(git diff --staged --diff-filter=ACMRTUXB --name-only)
+
+tput setaf 2; printf "Files for checks:\n"
+tput sgr0; printf $DIFF
+printf "\n\n"
+
+tput setaf 2; printf "Searching for debug trash... \n"
+tput sgr0
+for f in $DIFF
+do
+    printf "$f\n"
+    ag -i " dd\(.*\)" $f && Failure
+    ag -i " var_dump\(.*\)" $f && Failure
+    ag -i " die\(.*\)" $f && Failure
+    ag -i " exit\(.*\)" $f && Failure
+    ag -i " dump\(.*\)" $f && Failure
+done
+tput setaf 2; printf "OK!\n\n"
+
+tput setaf 2; printf "Linting...\n"
+tput sgr0
+for f in $DIFF
+do
+    printf "$f\n"
+    ! php -l $f && Failure
+done
+tput setaf 2; printf "OK!\n\n"
+
+tput setaf 2; printf "Fixing formatting... \n"
+tput sgr0
+for f in $DIFF
+do
+    printf "$f\n"
+    ! php-cs-fixer fix --diff -v --using-cache=no $f --rules=@PSR2,@PHP71Migration,@Symfony,@DoctrineAnnotation,-phpdoc_to_comment,class_keyword_remove,combine_consecutive_issets,combine_consecutive_unsets,declare_strict_types,linebreak_after_opening_tag,mb_str_functions,method_chaining_indentation,no_useless_else,no_useless_return,ordered_class_elements,ordered_imports,psr4,strict_comparison --allow-risky=yes && Failure
+    git add $f
+done
+tput setaf 2; printf "OK!\n\n"
+tput setaf 6; printf "Carefully check files changed by php-cs-fixer if any\n\n"
+
+tput setaf 2; printf "Phpunit...\n"
+tput sgr0
+cd ../../../..
+docker-compose up -d api
+! docker-compose exec -T --user www api "./vendor/bin/phpunit" && Failure
+tput setaf 2; printf "Ok!\n\n"
+
+Success

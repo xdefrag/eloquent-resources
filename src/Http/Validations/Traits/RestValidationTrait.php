@@ -48,7 +48,7 @@ trait RestValidationTrait
     public function create(Request $request): JsonResponse
     {
         $user = $request->user();
-        
+
         if (!$this->isUserHasPermissionTo($user, 'create')) {
             throw new AccessDeniedHttpException();
         }
@@ -106,7 +106,10 @@ trait RestValidationTrait
 
     protected function isUserHasPermissionTo(?Model $user, string $method): bool
     {
-        return (isset($this->permissions, $this->permissions['all']) && $user === null)
-            || ($user !== null && $user->hasPermissionTo($this->permissions['all']));
+        return !isset($this->permissions, $this->permissions[$method])
+            || (null !== $user
+            && isset($this->permissions, $this->permissions[$method])
+            && null !== $this->permissions[$method]
+            && $user->hasPermissionTo($this->permissions[$method]));
     }
 }
