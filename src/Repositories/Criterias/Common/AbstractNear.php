@@ -9,8 +9,20 @@ use Illuminate\Support\Facades\DB;
 abstract class AbstractNear implements CriteriaInterface
 {
     const EARTH_RADIUS_KM = 6371;
-    const NEARABLE = 'contacts';
-    const RELATION = 'studios.contact';
+
+    /* 
+     * Model with latitude and longitude
+     *
+     * ex: contacts
+     */
+    const NEARABLE = '';
+
+    /*
+     * Model relation to repository Model 
+     *
+     * ex: studios.contact
+     */
+    const RELATION = '';
 
     protected $latitude;
     protected $longitude;

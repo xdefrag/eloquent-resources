@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Devjs\EloquentResources\Http\Validations\Traits;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -14,9 +15,7 @@ trait RestValidationTrait
     {
         $user = $request->user();
 
-        if (isset($this->permissions, $this->permissions['all'])
-            && !$user->hasPermissionTo($this->permissions['all'])
-        ) {
+        if (!$this->isUserHasPermissionTo($user, 'all')) {
             throw new AccessDeniedHttpException();
         }
 
@@ -33,9 +32,7 @@ trait RestValidationTrait
     {
         $user = $request->user();
 
-        if (isset($this->permissions, $this->permissions['get'])
-            && !$user->hasPermissionTo($this->permissions['get'])
-        ) {
+        if (!$this->isUserHasPermissionTo($user, 'get')) {
             throw new AccessDeniedHttpException();
         }
 
@@ -52,9 +49,7 @@ trait RestValidationTrait
     {
         $user = $request->user();
 
-        if (isset($this->permissions, $this->permissions['create'])
-            && !$user->hasPermissionTo($this->permissions['create'])
-        ) {
+        if (!$this->isUserHasPermissionTo($user, 'create')) {
             throw new AccessDeniedHttpException();
         }
 
@@ -75,9 +70,7 @@ trait RestValidationTrait
     {
         $user = $request->user();
 
-        if (isset($this->permissions, $this->permissions['update'])
-            && !$user->hasPermissionTo($this->permissions['update'])
-        ) {
+        if (!$this->isUserHasPermissionTo($user, 'update')) {
             throw new AccessDeniedHttpException();
         }
 
@@ -98,18 +91,25 @@ trait RestValidationTrait
     {
         $user = $request->user();
 
-        if (isset($this->permissions, $this->permissions['delete'])
-            && !$user->hasPermissionTo($this->permissions['delete'])
-        ) {
+        if (!$this->isUserHasPermissionTo($user, 'destroy')) {
             throw new AccessDeniedHttpException();
         }
 
-        if (isset($this->custom, $this->custom['delete'])
-            && !$this->custom['delete']($request)
+        if (isset($this->custom, $this->custom['destroy'])
+            && !$this->custom['destroy']($request)
         ) {
             throw new AccessDeniedHttpException();
         }
 
         return $this->controller->destroy($request);
+    }
+
+    protected function isUserHasPermissionTo(?Model $user, string $method): bool
+    {
+        return !isset($this->permissions, $this->permissions[$method])
+            || (null !== $user
+            && isset($this->permissions, $this->permissions[$method])
+            && null !== $this->permissions[$method]
+            && $user->hasPermissionTo($this->permissions[$method]));
     }
 }

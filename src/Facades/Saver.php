@@ -6,8 +6,12 @@ namespace Devjs\EloquentResources\Facades;
 
 class Saver
 {
-    public static function save(string $location, string $context): void
+    public static function save(string $location, string $context, bool $force = false): void
     {
+        if (file_exists($location) && !$force) {
+            throw new \Exception('File already exists. Aborting.');
+        }
+
         $dir = '';
         
         foreach (explode('/', $location) as $currentDir) {

@@ -18,6 +18,11 @@ class EloquentResourcesServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        //
+        if (isNotLumen()) {
+            $this->mergeConfigFrom(
+                __DIR__.'/../config/eloquent-resources.php',
+                'eloquent-resources'
+            );
+        }
     }
 }

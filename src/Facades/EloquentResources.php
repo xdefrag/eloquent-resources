@@ -6,9 +6,9 @@ namespace Devjs\EloquentResources\Facades;
 
 use Symfony\Component\Finder\Finder;
 
-class EloquentResources 
+class EloquentResources
 {
-    public static function generators(): array
+    public static function generators(array $only = ['all']): array
     {
         $finder = new Finder();
 
@@ -22,9 +22,15 @@ class EloquentResources
                 continue;
             }
 
-            $className = '\Devjs\EloquentResources\Generators\\' 
+            $className = '\Devjs\EloquentResources\Generators\\'
                 . str_replace('.php', '', $file->getFilename());
-            $generators[] = new $className();
+            $generator = new $className();
+
+            if (in_array('all', $only) || $generator->isInGroups($only)) {
+                $generators[] = $generator;
+            }
+
+            unset($generator);
         }
 
         return $generators;

@@ -6,10 +6,11 @@ namespace Devjs\EloquentResources\Http\Validations;
 
 use Devjs\EloquentResources\Http\Interfaces\RestInterface;
 use Devjs\EloquentResources\Http\Validations\Traits\RestValidationTrait;
+use Devjs\EloquentResources\Http\Validations\Traits\ValidateMethodTrait;
 
 abstract class AbstractValidation implements RestInterface 
 {
-    use RestValidationTrait;
+    use RestValidationTrait, ValidateMethodTrait;
 
     /*
      * Decorated controller.

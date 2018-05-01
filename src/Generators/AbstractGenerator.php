@@ -9,6 +9,8 @@ abstract class AbstractGenerator implements GeneratorInterface
 {
     protected $stub;
 
+    protected $groups = [];
+
     public function generate(string $entityName): string
     {
         list($ns, $base) = $this->parseEntityName($entityName);
@@ -18,13 +20,20 @@ abstract class AbstractGenerator implements GeneratorInterface
         return $this->stub;
     }
 
+    public function isInGroups(array $groups): bool
+    {
+        return count(
+            array_intersect($this->groups, $groups)
+        ) > 0;
+    }
+
     protected function parseEntityName(string $entityName): array
     {
-        $ns = '\\';
+        $ns = '';
         $base = '';
 
         if (strpos($entityName, '\\') !== false) {
-            $ns .= preg_replace('/\\\\\w+$/', '', $entityName);
+            $ns = '\\' . preg_replace('/\\\\\w+$/', '', $entityName);
             $base = preg_replace('/.+\\\\/', '', $entityName);
         } else {
             $base = $entityName;

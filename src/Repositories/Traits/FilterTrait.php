@@ -10,18 +10,21 @@ trait FilterTrait
 {
     public function filter(array $parameters): Collection
     {
-        $criteriaNamespace = 'App\Repositories\Criterias\\' . class_basename($this->model)  . '\\';
+        $criteriaCustomNamespace = config('eloquent-resources.criteria.custom_path') . class_basename($this->model)  . '\\';
 
         foreach ($parameters as $filter => $data) {
-            $criteriaClassPath = $criteriaNamespace . studly_case($filter);
+            $criteriaCustomClassPath = $criteriaCustomNamespace . studly_case($filter);
+            $criteriaDefaulClassPath = config('eloquent-resources.criteria.default_path') . studly_case($filter);
 
-            if (!class_exists($criteriaClassPath)) {
+            if (class_exists($criteriaCustomClassPath)) {
+                $this->pushCriteria(new $criteriaCustomClassPath($data));
                 continue;
             }
 
-            $criteria = new $criteriaClassPath($data);
-
-            $this->pushCriteria($criteria);
+            if (class_exists($criteriaDefaulClassPath)) {
+                $this->pushCriteria(new $criteriaDefaulClassPath($data));
+                continue;
+            }
         }
 
         return $this->applyCriteria()->all();

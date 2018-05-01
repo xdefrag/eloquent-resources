@@ -27,7 +27,7 @@ trait RestTrait
             ->applyCriteria()
             ->filter($request->all());
 
-        $this->dispatchEvent($request->user()->id, 0, 'all');
+        $this->dispatchEvent($this->extractUserId($request), 0, 'all');
 
         return response()
             ->json($data, $status['all'] ?? Response::HTTP_OK);
@@ -41,7 +41,7 @@ trait RestTrait
             ->applyCriteria()
             ->find($id);
 
-        $this->dispatchEvent($request->user()->id, $id, 'get');
+        $this->dispatchEvent($this->extractUserId($request), $id, 'get');
 
         return response()
             ->json($item, $status['get'] ?? Response::HTTP_OK);
@@ -51,7 +51,7 @@ trait RestTrait
     {
         $item = $this->repository->create($request->all());
 
-        $this->dispatchEvent($request->user()->id, $item->id, 'create');
+        $this->dispatchEvent($this->extractUserId($request), $item->id, 'create');
 
         return response()
             ->json($item->id, $status['create'] ?? Response::HTTP_CREATED);
@@ -59,9 +59,11 @@ trait RestTrait
 
     public function update(Request $request): JsonResponse
     {
-        $item = $this->repository->update((int) $request->get('id'), $request->all());
+        $item = $this->repository
+            ->applyCriteria()
+            ->update((int) $request->get('id'), $request->all());
 
-        $this->dispatchEvent($request->user()->id, $item->id, 'update');
+        $this->dispatchEvent($this->extractUserId($request), $item->id, 'update');
 
         return response()
             ->json($item, $status['update'] ?? Response::HTTP_CREATED);
@@ -79,7 +81,7 @@ trait RestTrait
             throw new NotFoundHttpException();
         }
 
-        $this->dispatchEvent($request->user()->id, $id, 'destroy');
+        $this->dispatchEvent($this->extractUserId($request), $id, 'destroy');
 
         return response()
             ->json(null, $status['destroy'] ?? Response::HTTP_NO_CONTENT);
@@ -92,5 +94,10 @@ trait RestTrait
         }
 
         event(new $this->events[$event]($userId, $id));
+    }
+
+    protected function extractUserId(Request $request): int
+    {
+        return null !== $request->user() ? $request->user()->id : -1;
     }
 }

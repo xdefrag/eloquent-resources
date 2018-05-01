@@ -5,9 +5,9 @@ namespace Devjs\EloquentResources\Repositories\Criterias\Common;
 use Devjs\EloquentResources\Repositories\Criterias\CriteriaInterface;
 use Illuminate\Database\Eloquent\Builder;
 
-abstract class AbstractLike implements CriteriaInterface
+abstract class AbstractValue implements CriteriaInterface
 {
-    protected $queries;
+    private $queries;
 
     public function __construct(array $queries = [])
     {
@@ -21,14 +21,9 @@ abstract class AbstractLike implements CriteriaInterface
     public function apply(Builder $qb): Builder
     {
         foreach ($this->queries as [$column, $value]) {
-            $qb = $qb->where($column, $this->getLike(), '%' . $value . '%');
+            $qb = $qb->where($column, $value);
         }
 
         return $qb;
-    }
-
-    private function getLike(): string
-    {
-        return config('database.default') === 'pgsql' ? 'ilike' : 'like';
     }
 }
