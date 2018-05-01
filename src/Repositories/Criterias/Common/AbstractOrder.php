@@ -11,9 +11,9 @@ abstract class AbstractOrder implements CriteriaInterface
 
     protected $order;
 
-    public function __construct(?string $order = 'desc')
+    public function __construct(array $params = [])
     {
-        $this->order = $order;
+        [$this->column, $this->order] = $params;
     }
 
     public function apply(Builder $qb): Builder

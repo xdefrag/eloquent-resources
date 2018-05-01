@@ -7,18 +7,24 @@ use Illuminate\Database\Eloquent\Builder;
 
 abstract class AbstractLike implements CriteriaInterface
 {
-    protected $column;
+    protected $queries;
 
-    private $name;
-
-    public function __construct(string $name = '')
+    public function __construct(array $queries = [])
     {
-        $this->name = $name;
+        if (isset($queries[0]) && !is_array($queries[0])) {
+            $queries = [$queries];
+        }
+
+        $this->queries = $queries;
     }
 
     public function apply(Builder $qb): Builder
     {
-        return $qb->where($this->column, $this->getLike(), '%' . $this->name . '%');
+        foreach ($this->queries as [$column, $value]) {
+            $qb = $qb->where($column, $this->getLike(), '%' . $value . '%');
+        }
+
+        return $qb;
     }
 
     private function getLike(): string

@@ -7,17 +7,23 @@ use Illuminate\Database\Eloquent\Builder;
 
 abstract class AbstractValue implements CriteriaInterface
 {
-    protected $column;
+    private $queries;
 
-    private $value;
-
-    public function __construct(string $value = '')
+    public function __construct(array $queries = [])
     {
-        $this->value = $value;
+        if (isset($queries[0]) && !is_array($queries[0])) {
+            $queries = [$queries];
+        }
+
+        $this->queries = $queries;
     }
 
     public function apply(Builder $qb): Builder
     {
-        return $qb->where($this->column, $this->value);
+        foreach ($this->queries as [$column, $value]) {
+            $qb = $qb->where($column, $value);
+        }
+
+        return $qb;
     }
 }

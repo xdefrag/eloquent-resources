@@ -12,8 +12,7 @@ abstract class AbstractPagination implements CriteriaInterface
 
     public function __construct(array $pagination)
     {
-        $this->current = $pagination[0];
-        $this->per = $pagination[1];
+        [$this->current, $this->per] = $pagination;
     }
 
     public function apply(Builder $qb): Builder
