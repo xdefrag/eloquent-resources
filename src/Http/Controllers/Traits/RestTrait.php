@@ -20,7 +20,9 @@ trait RestTrait
         $data = [];
 
         if (method_exists($this, 'addMetadata')) {
-            $data = $this->addMetadata($data);
+            foreach ($this->addMetadata() as $key => $value) {
+                $data[$key] = $value;
+            }
         }
 
         $data['items'] = $this->repository

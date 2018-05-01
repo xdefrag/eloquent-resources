@@ -13,18 +13,22 @@ trait RepositoryTrait
     /** @var Model $model */
     protected $model;
 
-    public function metadata(): array
+    public function getMetadata(): array
     {
-        if (!property_exists($this->model, 'rules')) {
-            return [];
-        }
-
         $metadata = [];
 
-        $metadata['entity'] = (new Metadata())($this->model::$rules);
+        if (property_exists($this->model, 'rules')) {
+            $metadata['entity'] = (new Metadata())($this->model::$rules);
+        }
 
         if (isset($this->metadata)) {
             foreach ($this->metadata as $key => $value) {
+                $metadata[$key] = $value;
+            }
+        }
+
+        if (method_exists($this, 'addMetadata')) {
+            foreach ($this->addMetadata() as $key => $value) {
                 $metadata[$key] = $value;
             }
         }

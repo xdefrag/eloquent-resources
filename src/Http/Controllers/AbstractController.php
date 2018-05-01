@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Devjs\EloquentResources\Http\Controllers;
 
-use Devjs\EloquentResources\Http\Interfaces\RestInterface;
 use Devjs\EloquentResources\Http\Controllers\Traits\RestTrait;
+use Devjs\EloquentResources\Http\Interfaces\RestInterface;
 use Illuminate\Http\Response;
 
 abstract class AbstractController implements RestInterface
@@ -14,7 +14,7 @@ abstract class AbstractController implements RestInterface
 
     /*
      * All events recieves current user id and entity id.
-     */ 
+     */
     protected $dispatchesEvents = [
         'all' => null,
         'get' => null,
@@ -26,7 +26,7 @@ abstract class AbstractController implements RestInterface
     /*
      * Custom statuses for resource. Handy for accepted
      * methods, if it queued.
-     */ 
+     */
     protected $status = [
         'all' => Response::HTTP_OK,
         'get' => Response::HTTP_OK,
@@ -37,9 +37,9 @@ abstract class AbstractController implements RestInterface
 
     /*
      * Adds metadata to 'all' request.
-     */ 
-    protected function addMetadata(array $data): array
+     */
+    protected function addMetadata(): array
     {
-        return $data;
+        return [];
     }
 }

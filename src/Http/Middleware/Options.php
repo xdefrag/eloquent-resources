@@ -43,7 +43,7 @@ class Options
         if (null === $metadata || null === $allowedMethods) {
             try {
                 $repository = app('App\Repositories\\'.$entity.'Repository');
-                $metadata = $repository->metadata();
+                $metadata = $repository->getMetadata();
                 $allowedMethods = $repository->getAllowedMethods();
             } catch (\Exception $exception) {
                 throw new NotAcceptableHttpException('Options for this entity not supported');
