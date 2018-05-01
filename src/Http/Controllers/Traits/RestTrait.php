@@ -93,7 +93,7 @@ trait RestTrait
             return;
         }
 
-        event(new $this->dispathchesEvents[$event]($userId, $id));
+        event(new $this->dispatchesEvents[$event]($userId, $id));
     }
 
     protected function extractUserId(Request $request): int
