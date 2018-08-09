@@ -1,3 +1,6 @@
+# Attention!
+This package was used on my past work projects as easy code generating tool: it has minimum possibilities, unfortunately no tests inside package (we experienced troubles to make laravel essentials like container or routes to work and have no idea about great tools like orchestral's [testbench](https://github.com/orchestral/testbench) yet) and some bugs. For now I have no interests to maintain this package, if you would like to continue work with that code = do yourself a favor, fork it and then use it. Thanks.
+
 # Eloquent Resources
 
 Common tools for quick resources creation including Repository with Interface, Validation and Controller with Interface.
@@ -25,8 +28,3 @@ For more info checkout command help.
 ```bash
 php artisan help eloquent-resources:generate
 ```
-
-# Todo
-- controller event generation
-- additional namespace for controller/validation/http interface
-- package tests
